@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TravelConnect</title>
+  <style>
+    /* General */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+      font-weight: bold;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* Header */
+    header {
+      background-color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    header .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #4CAF50;
+    }
+
+    header nav a {
+      margin-left: 1.5rem;
+      font-size: 1rem;
+      color: #333;
+      transition: color 0.3s ease;
+    }
+
+    header nav a:hover {
+      color: #4CAF50;
+    }
+
+    /* Hero Section */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5rem 2rem;
+      background: linear-gradient(90deg, #4CAF50, #007BFF);
+      color: white;
+      text-align: left;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero .btn {
+      padding: 0.75rem 2rem;
+      background: white;
+      color: #4CAF50;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .hero .btn:hover {
+      background: #4CAF50;
+      color: white;
+    }
+
+    /* Profiles */
+    .profiles {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .profile-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .profile-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .profile-card img {
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .profile-card .content {
+      padding: 1rem;
+    }
+
+    .profile-card h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.25rem;
+    }
+
+    .profile-card p {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    .profile-card .btn {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      background: #4CAF50;
+      color: white;
+      border-radius: 25px;
+      text-align: center;
+      transition: background 0.3s ease;
+    }
+
+    .profile-card .btn:hover {
+      background: #007BFF;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #333;
+      color: white;
+    }
+
+    footer a {
+      color: #4CAF50;
+      font-weight: bold;
+    }
+
+    footer a:hover {
+      color: #007BFF;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">TravelConnect</div>
+    <nav>
+      <a href="#about">Sobre Nosotros</a>
+      <a href="#profiles">Perfiles</a>
+      <a href="#contact">Contacto</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div>
+      <h1>Conecta con locales. Viaja diferente.</h1>
+      <p>Descubre experiencias auténticas con guías locales en cada destino.</p>
+      <a href="#profiles" class="btn">Explora Perfiles</a>
+    </div>
+    <img src="https://via.placeholder.com/400x300" alt="Travel">
+  </section>
+
+  <!-- Profiles Section -->
+  <section id="profiles" class="profiles">
+    <div class="profile-card">
+      <img src="https://via.placeholder.com/400x200" alt="Profile">
+      <div class="content">
+        <h3>Juan Pérez</h3>
+        <p>Barcelona, España</p>
+        <a href="#" class="btn">Ver Perfil</a>
+      </div>
+    </div>
+    <div class="profile-card">
+      <img src="https://via.placeholder.com/400x200" alt="Profile">
+      <div class="content">
+        <h3>Anna Müller</h3>
+        <p>Múnich, Alemania</p>
+        <a href="#" class="btn">Ver Perfil</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 TravelConnect. Todos los derechos reservados. Diseñado por <a href="#">Tu Nombre</a>.</p>
+  </footer>
+</body>
+</html>
