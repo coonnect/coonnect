@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TravelConnect</title>
   <style>
-    /* General */
+    /* --------- General Styles --------- */
     * {
       margin: 0;
       padding: 0;
@@ -28,7 +28,12 @@
       color: inherit;
     }
 
-    /* Header */
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* --------- Header Styles --------- */
     header {
       background-color: white;
       padding: 1.5rem 2rem;
@@ -55,7 +60,7 @@
       color: #4CAF50;
     }
 
-    /* Hero Section */
+    /* --------- Hero Section --------- */
     .hero {
       display: flex;
       align-items: center;
@@ -64,6 +69,8 @@
       padding: 5rem 2rem;
       background: linear-gradient(90deg, #4CAF50, #007BFF);
       color: white;
+      position: relative;
+      overflow: hidden;
     }
 
     .hero h1 {
@@ -91,7 +98,56 @@
       color: white;
     }
 
-    /* Profiles */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.3), rgba(0,0,0,0));
+      animation: pulse 10s infinite;
+      z-index: 1;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+    }
+
+    /* --------- Search Bar --------- */
+    .search-bar {
+      margin: 2rem auto;
+      text-align: center;
+    }
+
+    .search-bar input, .search-bar select, .search-bar button {
+      padding: 0.75rem;
+      margin: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .search-bar button {
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .search-bar button:hover {
+      background: #007BFF;
+    }
+
+    /* --------- Profiles Section --------- */
     .profiles {
       padding: 2rem;
       display: grid;
@@ -103,7 +159,8 @@
       background: white;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      padding: 1rem;
+      overflow: hidden;
+      position: relative;
       transition: transform 0.3s ease;
     }
 
@@ -111,33 +168,56 @@
       transform: translateY(-10px);
     }
 
+    .profile-card .header {
+      background: #4CAF50; /* Placeholder for country image */
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .profile-card .header img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid white;
+      margin-top: -40px;
+    }
+
     .profile-card h3 {
-      margin-bottom: 0.5rem;
-      font-size: 1.25rem;
+      margin: 0.5rem 0;
     }
 
     .profile-card p {
       font-size: 0.9rem;
       color: #666;
       margin-bottom: 1rem;
+      padding: 1rem;
     }
 
     .profile-card .btn {
-      display: inline-block;
       padding: 0.5rem 1rem;
       font-size: 0.9rem;
       background: #4CAF50;
       color: white;
       border-radius: 25px;
+      display: block;
       text-align: center;
       transition: background 0.3s ease;
+      margin: 1rem auto;
     }
 
     .profile-card .btn:hover {
       background: #007BFF;
     }
 
-    /* Footer */
+    .profile-card .details {
+      display: none;
+      padding: 1rem;
+      background: #f9f9f9;
+      border-top: 1px solid #ddd;
+    }
+
+    /* --------- Footer Section --------- */
     footer {
       text-align: center;
       padding: 2rem;
@@ -175,31 +255,50 @@
     </div>
   </section>
 
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <input type="text" placeholder="Busca por país">
+    <select>
+      <option>Todos los hobbies</option>
+      <option>Fotografía</option>
+      <option>Cultura</option>
+      <option>Aventura</option>
+    </select>
+    <button>Buscar</button>
+  </div>
+
   <!-- Profiles Section -->
   <section id="profiles" class="profiles">
     <div class="profile-card">
-      <h3>Juan Pérez</h3>
+      <div class="header">
+        <!-- Foto del país como fondo -->
+        <!-- <img src="ruta_foto_cara.jpg" alt="Foto de perfil"> -->
+        <h3>Juan Pérez</h3>
+      </div>
       <p>Barcelona, España</p>
-      <p>"Vivo en Barcelona y puedo mostrarte los mejores lugares locales."</p>
-      <a href="#" class="btn">Ver Perfil</a>
-    </div>
-    <div class="profile-card">
-      <h3>Anna Müller</h3>
-      <p>Múnich, Alemania</p>
-      <p>"Amante de la cerveza y los castillos. Perfecto para un tour local."</p>
-      <a href="#" class="btn">Ver Perfil</a>
-    </div>
-    <div class="profile-card">
-      <h3>Luis García</h3>
-      <p>Ciudad de México, México</p>
-      <p>"Déjame mostrarte la verdadera comida mexicana y los mercados locales."</p>
-      <a href="#" class="btn">Ver Perfil</a>
+      <p>"Conozco los mejores lugares locales para una experiencia auténtica."</p>
+      <div class="btn">Ver más</div>
+      <div class="details">
+        <p>Email: juanperez@example.com</p>
+        <p>Valoraciones: ★★★★★ (45)</p>
+        <p>Viajeros ayudados: 200</p>
+      </div>
     </div>
   </section>
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2024 TravelConnect. Todos los derechos reservados. Diseñado por <a href="#">Tu Nombre</a>.</p>
+    <p>&copy; 2024 TravelConnect. Todos los derechos reservados.</p>
+    <p>Síguenos en <a href="https://instagram.com">Instagram</a> o contáctanos en <a href="mailto:contacto@travelconnect.com">contacto@travelconnect.com</a>.</p>
   </footer>
+  <script>
+    // Función para desplegar detalles
+    document.querySelectorAll('.btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const details = button.nextElementSibling;
+        details.style.display = details.style.display === 'block' ? 'none' : 'block';
+      });
+    });
+  </script>
 </body>
 </html>
