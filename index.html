@@ -28,11 +28,6 @@
       color: inherit;
     }
 
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
     /* Header */
     header {
       background-color: white;
@@ -64,11 +59,11 @@
     .hero {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      text-align: center;
       padding: 5rem 2rem;
       background: linear-gradient(90deg, #4CAF50, #007BFF);
       color: white;
-      text-align: left;
     }
 
     .hero h1 {
@@ -108,21 +103,12 @@
       background: white;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
+      padding: 1rem;
       transition: transform 0.3s ease;
     }
 
     .profile-card:hover {
       transform: translateY(-10px);
-    }
-
-    .profile-card img {
-      height: 200px;
-      object-fit: cover;
-    }
-
-    .profile-card .content {
-      padding: 1rem;
     }
 
     .profile-card h3 {
@@ -187,26 +173,27 @@
       <p>Descubre experiencias auténticas con guías locales en cada destino.</p>
       <a href="#profiles" class="btn">Explora Perfiles</a>
     </div>
-    <img src="https://via.placeholder.com/400x300" alt="Travel">
   </section>
 
   <!-- Profiles Section -->
   <section id="profiles" class="profiles">
     <div class="profile-card">
-      <img src="https://via.placeholder.com/400x200" alt="Profile">
-      <div class="content">
-        <h3>Juan Pérez</h3>
-        <p>Barcelona, España</p>
-        <a href="#" class="btn">Ver Perfil</a>
-      </div>
+      <h3>Juan Pérez</h3>
+      <p>Barcelona, España</p>
+      <p>"Vivo en Barcelona y puedo mostrarte los mejores lugares locales."</p>
+      <a href="#" class="btn">Ver Perfil</a>
     </div>
     <div class="profile-card">
-      <img src="https://via.placeholder.com/400x200" alt="Profile">
-      <div class="content">
-        <h3>Anna Müller</h3>
-        <p>Múnich, Alemania</p>
-        <a href="#" class="btn">Ver Perfil</a>
-      </div>
+      <h3>Anna Müller</h3>
+      <p>Múnich, Alemania</p>
+      <p>"Amante de la cerveza y los castillos. Perfecto para un tour local."</p>
+      <a href="#" class="btn">Ver Perfil</a>
+    </div>
+    <div class="profile-card">
+      <h3>Luis García</h3>
+      <p>Ciudad de México, México</p>
+      <p>"Déjame mostrarte la verdadera comida mexicana y los mercados locales."</p>
+      <a href="#" class="btn">Ver Perfil</a>
     </div>
   </section>
 
