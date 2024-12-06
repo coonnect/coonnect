@@ -4,420 +4,227 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TravelConnect</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    // Inicializa EmailJS con tu User ID
+    emailjs.init("TU_USER_ID");
+
+    // Función para manejar el envío del cuestionario
+    function openContactModal(guideName) {
+      const guideEmail = guideName === "Juan Pérez" ? "juan@example.com" :
+                         guideName === "Carlos Sanchez" ? "carlos@example.com" : null;
+
+      if (!guideEmail) {
+        alert("Correo no disponible para este guía.");
+        return;
+      }
+
+      const message = prompt(`Escribe tu mensaje para ${guideName}:`, "Hola, estoy interesado en tus servicios...");
+      if (message) {
+        const templateParams = {
+          guide_name: guideName,
+          guide_email: guideEmail,
+          traveler_message: message,
+        };
+
+        emailjs.send("TU_SERVICE_ID", "TU_TEMPLATE_ID", templateParams)
+          .then((response) => {
+            alert("¡Correo enviado exitosamente!");
+          })
+          .catch((error) => {
+            console.error("Error al enviar el correo:", error);
+            alert("Hubo un problema al enviar el correo. Intenta de nuevo más tarde.");
+          });
+      }
+    }
+
+    // Función para manejar el registro de guías locales
+    function registerGuide(event) {
+      event.preventDefault();
+      const name = document.getElementById("registerName").value;
+      const email = document.getElementById("registerEmail").value;
+      const country = document.getElementById("registerCountry").value;
+      const hobbies = document.getElementById("registerHobbies").value;
+
+      if (!name || !email || !country || !hobbies) {
+        alert("Por favor, completa todos los campos.");
+        return;
+      }
+
+      const templateParams = {
+        guide_name: name,
+        guide_email: email,
+        guide_country: country,
+        guide_hobbies: hobbies,
+      };
+
+      emailjs.send("TU_SERVICE_ID", "TU_REGISTER_TEMPLATE_ID", templateParams)
+        .then((response) => {
+          alert("¡Registro completado con éxito! Nos pondremos en contacto contigo pronto.");
+          document.getElementById("registerForm").reset();
+        })
+        .catch((error) => {
+          console.error("Error en el registro:", error);
+          alert("Hubo un problema al completar el registro. Intenta de nuevo más tarde.");
+        });
+    }
+  </script>
   <style>
-    /* -------- General Styles -------- */
-    * {
+    /* Estilos básicos */
+    body {
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Arial', sans-serif;
       background-color: #f9f9f9;
-      color: #333;
-      line-height: 1.6;
     }
 
-    h1, h2, h3 {
-      font-weight: bold;
+    header, footer {
+      background-color: #333;
+      color: white;
+      padding: 1rem;
+      text-align: center;
     }
 
-    a {
+    .container {
+      padding: 1rem;
+    }
+
+    .profile-card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
       text-decoration: none;
-      color: inherit;
     }
 
-    img {
-      max-width: 100%;
-      display: block;
+    .btn:hover {
+      background: #45a049;
     }
 
-    /* -------- Header Styles -------- */
-    header {
-      background-color: white;
-      padding: 1.5rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    header .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #4CAF50;
-    }
-
-    header nav a {
-      margin-left: 1.5rem;
-      font-size: 1rem;
-      color: #333;
-      transition: color 0.3s ease;
-    }
-
-    header nav a:hover {
-      color: #4CAF50;
-    }
-
-    /* -------- Hero Section -------- */
-    .hero {
+    form {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 5rem 2rem;
-      background: linear-gradient(90deg, #4CAF50, #007BFF);
-      color: white;
-      position: relative;
-    }
-
-    .hero h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-
-    .hero .changing-phrases {
-      font-size: 1.5rem;
-      font-weight: lighter;
-      margin-bottom: 2rem;
-      height: 2rem;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero .changing-phrases span {
-      display: none;
-    }
-
-    .hero .changing-phrases span.active {
-      display: inline-block;
-    }
-
-    .hero .btn {
-      padding: 0.75rem 2rem;
+      gap: 1rem;
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 1rem;
       background: white;
-      color: #4CAF50;
-      border-radius: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    form input, form select, form button {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
       font-size: 1rem;
+    }
+
+    form button {
+      background: #4CAF50;
+      color: white;
       font-weight: bold;
-      transition: background 0.3s ease, color 0.3s ease;
       cursor: pointer;
     }
 
-    .hero .btn:hover {
-      background: #4CAF50;
-      color: white;
+    form button:hover {
+      background: #45a049;
     }
 
-    /* -------- Search Bar -------- */
     .search-bar {
-      margin: 2rem auto;
-      text-align: center;
       display: flex;
-      justify-content: center;
       gap: 1rem;
+      justify-content: center;
+      margin: 1rem 0;
     }
 
-    .search-bar input, .search-bar select, .search-bar button {
-      padding: 0.75rem;
-      margin: 0.5rem;
+    .search-bar select, .search-bar input, .search-bar button {
+      padding: 10px;
       border: 1px solid #ddd;
-      border-radius: 25px;
+      border-radius: 5px;
       font-size: 1rem;
-      outline: none;
     }
 
     .search-bar button {
       background: #4CAF50;
       color: white;
       cursor: pointer;
-      transition: background 0.3s ease;
     }
 
     .search-bar button:hover {
-      background: #007BFF;
-    }
-
-    /* -------- Profiles Section -------- */
-    .profiles {
-      padding: 2rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .profile-card {
-      background: white;
-      border-radius: 15px;
-      overflow: hidden;
-      position: relative;
-      transition: transform 0.3s ease;
-      border: 1px solid #ddd;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .profile-card:hover {
-      transform: scale(1.05);
-    }
-
-    .profile-card .profile-header {
-      background: #4CAF50; /* Imagen de fondo simulada */
-      padding: 1rem;
-      color: white;
-      text-align: center;
-    }
-
-    .profile-card .profile-header img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 3px solid white;
-      margin-bottom: 1rem;
-    }
-
-    .profile-card .profile-body {
-      padding: 1rem;
-      text-align: center;
-    }
-
-    .profile-card h3 {
-      margin-bottom: 0.5rem;
-      font-size: 1.25rem;
-    }
-
-    .profile-card p {
-      margin-bottom: 1rem;
-      font-size: 0.9rem;
-      color: #666;
-    }
-
-    .profile-card .btn {
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
-      background: #007BFF;
-      color: white;
-      border-radius: 25px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .profile-card .btn:hover {
-      background: #4CAF50;
-    }
-    /* -------- Register Section -------- */
-    .register-section {
-      background: #4CAF50;
-      color: white;
-      padding: 3rem 2rem;
-      text-align: center;
-    }
-
-    .register-section h2 {
-      margin-bottom: 1rem;
-    }
-
-    .register-section form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      max-width: 400px;
-      margin: 0 auto;
-    }
-
-    .register-section form input, .register-section form button {
-      padding: 0.75rem;
-      border-radius: 25px;
-      border: none;
-      font-size: 1rem;
-    }
-
-    .register-section form button {
-      background: white;
-      color: #4CAF50;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-
-    .register-section form button:hover {
-      background: #007BFF;
-      color: white;
-    }
-
-    /* -------- Footer Section -------- */
-    footer {
-      text-align: center;
-      padding: 2rem;
-      background: #333;
-      color: white;
-    }
-
-    footer a {
-      color: #4CAF50;
-      font-weight: bold;
-    }
-
-    footer a:hover {
-      color: #007BFF;
+      background: #45a049;
     }
   </style>
 </head>
 <body>
-  <!-- Header -->
   <header>
-    <div class="logo">TravelConnect</div>
-    <nav>
-      <a href="#about">Sobre Nosotros</a>
-      <a href="#profiles">Perfiles</a>
-      <a href="#contact">Contacto</a>
-    </nav>
+    <h1>TravelConnect</h1>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div>
-      <h1>Conecta con locales. Viaja diferente.</h1>
-      <div class="changing-phrases">
-        <span class="active">Haz sushi en Japón.</span>
-        <span>Prueba la mejor Burger de EEUU.</span>
-        <span>Descubre la cala secreta de Mallorca.</span>
-      </div>
-      <a href="#profiles" class="btn">Explora Perfiles</a>
+  <div class="container">
+    <h2>Explora Perfiles</h2>
+    <div class="search-bar">
+      <select id="countryFilter">
+        <option value="">Selecciona un país</option>
+        <option value="España">España</option>
+        <option value="Alemania">Alemania</option>
+        <option value="México">México</option>
+        <option value="Italia">Italia</option>
+      </select>
+      <select id="hobbyFilter">
+        <option value="">Selecciona un hobby</option>
+        <option value="Aventura">Aventura</option>
+        <option value="Gastronomía">Gastronomía</option>
+        <option value="Arte">Arte</option>
+        <option value="Historia">Historia</option>
+      </select>
+      <button onclick="alert('Función de búsqueda no implementada')">Buscar</button>
     </div>
-  </section>
 
-  <!-- Search Bar -->
-  <div class="search-bar">
-    <select>
-      <option value="">Selecciona un país</option>
-      <option>España</option>
-      <option>Alemania</option>
-      <option>México</option>
-      <option>Italia</option>
-    </select>
-    <button>Buscar</button>
+    <div class="profile-card">
+      <h3>Juan Pérez</h3>
+      <p>Guía en Barcelona, España</p>
+      <p>Hobbies: Gastronomía, Historia</p>
+      <button class="btn" onclick="openContactModal('Juan Pérez')">Contactar</button>
+    </div>
+
+    <div class="profile-card">
+      <h3>Carlos Sanchez</h3>
+      <p>Guía en Madrid, España</p>
+      <p>Hobbies: Aventura, Arte</p>
+      <button class="btn" onclick="openContactModal('Carlos Sanchez')">Contactar</button>
+    </div>
   </div>
 
-  <!-- Profiles Section -->
-  <section id="profiles" class="profiles">
-    <div class="profile-card">
-      <div class="profile-header">
-        <!-- Imagen del país como fondo -->
-        <!-- <img src="ruta_foto_usuario.jpg" alt="Foto de perfil"> -->
-        <h3>Juan Pérez</h3>
-      </div>
-      <div class="profile-body">
-        <p>Barcelona, España</p>
-        <p>Guía experto en tours gastronómicos y culturales.</p>
-        <p>Valoraciones: ★★★★★</p>
-        <p>Viajeros ayudados: 120</p>
-        <button class="btn" onclick="openContactModal('Juan Pérez')">Contactar</button>
-      </div>
-    </div>
-  </section>
-
-    <section id="profiles" class="profiles">
-    <div class="profile-card">
-      <div class="profile-header">
-        <!-- Imagen del país como fondo -->
-        <!-- <img src="ruta_foto_usuario.jpg" alt="Foto de perfil"> -->
-        <h3>Carlos Sanchez</h3>
-      </div>
-      <div class="profile-body">
-        <p>Madrid, España</p>
-        <p>Local experto en aventura.</p>
-        <p>Valoraciones: ★★★★</p>
-        <p>Viajeros ayudados: 10</p>
-        <button class="btn" onclick="openContactModal('Carlos Sanchez')">Contactar</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Register Section -->
-  <section class="register-section">
+  <div class="container">
     <h2>¿Eres un guía local? ¡Regístrate ahora!</h2>
-    <form onsubmit="event.preventDefault(); alert('Registro completado.');">
-      <input type="text" placeholder="Tu nombre" required>
-      <input type="email" placeholder="Tu correo" required>
-      <input type="text" placeholder="Tu país" required>
+    <form id="registerForm" onsubmit="registerGuide(event)">
+      <input id="registerName" type="text" placeholder="Tu nombre" required>
+      <input id="registerEmail" type="email" placeholder="Tu correo" required>
+      <input id="registerCountry" type="text" placeholder="Tu país" required>
+      <input id="registerHobbies" type="text" placeholder="Tus hobbies (separados por comas)" required>
       <button type="submit">Registrarse</button>
     </form>
-  </section>
+  </div>
 
-  <!-- Footer -->
   <footer>
     <p>&copy; 2024 TravelConnect. Todos los derechos reservados.</p>
-    <p>Síguenos en <a href="https://instagram.com" target="_blank">Instagram</a> o contáctanos en <a href="mailto:contacto@travelconnect.com">contacto@travelconnect.com</a>.</p>
   </footer>
+</body>
+</html>
 
-  <!-- Contact Modal -->
-  <div id="contactModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background: white; padding: 2rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 10px; z-index: 1000;">
-    <h2>Contactar Guía</h2>
-    <p id="modalGuideName"></p>
-    <form onsubmit="event.preventDefault(); closeModal(); alert('¡Mensaje enviado!');">
-      <textarea placeholder="Tu mensaje" style="width: 100%; padding: 1rem; border-radius: 5px; border: 1px solid #ddd; margin-bottom: 1rem;"></textarea>
-      <button type="submit" style="padding: 0.75rem; background: #4CAF50; color: white; border: none; border-radius: 25px; cursor: pointer;">Enviar</button>
-      <button type="button" style="padding: 0.75rem; background: #ddd; color: black; border: none; border-radius: 25px; cursor: pointer;" onclick="closeModal()">Cancelar</button>
-    </form>
-  </div>
-  <div id="modalBackdrop" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;" onclick="closeModal()"></div>
-
-  <script>
-    // Animación de frases cambiantes
-    const phrases = document.querySelectorAll('.changing-phrases span');
-    let currentPhraseIndex = 0;
-
-    setInterval(() => {
-      phrases[currentPhraseIndex].classList.remove('active');
-      currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
-      phrases[currentPhraseIndex].classList.add('active');
-    }, 1000);
-
-    // Contact Modal Functions
-    function openContactModal(guideName) {
-      document.getElementById('modalGuideName').textContent = `Contactando con: ${guideName}`;
-      document.getElementById('contactModal').style.display = 'block';
-      document.getElementById('modalBackdrop').style.display = 'block';
-    }
-
-    function closeModal() {
-      document.getElementById('contactModal').style.display = 'none';
-      document.getElementById('modalBackdrop').style.display = 'none';
-    }
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script>
-  // Inicializa EmailJS con tu User ID
-  emailjs.init("TU_USER_ID");
-
-  // Función para manejar el envío del cuestionario
-  function openContactModal(guideName) {
-    const guideEmail = guideName === "Juan Pérez" ? "juan@example.com" :
-                       guideName === "Carlos Sanchez" ? "carlos@example.com" : null;
-
-    if (!guideEmail) {
-      alert("Correo no disponible para este guía.");
-      return;
-    }
-
-    const message = prompt(`Escribe tu mensaje para ${guideName}:`, "Hola, estoy interesado en tus servicios...");
-    if (message) {
-      const templateParams = {
-        guide_name: guideName,
-        guide_email: guideEmail,
-        traveler_message: message,
-      };
-
-      emailjs.send("TU_SERVICE_ID", "TU_TEMPLATE_ID", templateParams)
-        .then((response) => {
-          alert("¡Correo enviado exitosamente!");
-        })
-        .catch((error) => {
-          console.error("Error al enviar el correo:", error);
-          alert("Hubo un problema al enviar el correo. Intenta de nuevo más tarde.");
-        });
-    }
-  }
   </script>
 </body>
 </html>
