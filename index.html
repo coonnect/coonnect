@@ -385,6 +385,39 @@
       document.getElementById('contactModal').style.display = 'none';
       document.getElementById('modalBackdrop').style.display = 'none';
     }
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+  // Inicializa EmailJS con tu User ID
+  emailjs.init("TU_USER_ID");
+
+  // Función para manejar el envío del cuestionario
+  function openContactModal(guideName) {
+    const guideEmail = guideName === "Juan Pérez" ? "juan@example.com" :
+                       guideName === "Carlos Sanchez" ? "carlos@example.com" : null;
+
+    if (!guideEmail) {
+      alert("Correo no disponible para este guía.");
+      return;
+    }
+
+    const message = prompt(`Escribe tu mensaje para ${guideName}:`, "Hola, estoy interesado en tus servicios...");
+    if (message) {
+      const templateParams = {
+        guide_name: guideName,
+        guide_email: guideEmail,
+        traveler_message: message,
+      };
+
+      emailjs.send("TU_SERVICE_ID", "TU_TEMPLATE_ID", templateParams)
+        .then((response) => {
+          alert("¡Correo enviado exitosamente!");
+        })
+        .catch((error) => {
+          console.error("Error al enviar el correo:", error);
+          alert("Hubo un problema al enviar el correo. Intenta de nuevo más tarde.");
+        });
+    }
+  }
   </script>
 </body>
 </html>
