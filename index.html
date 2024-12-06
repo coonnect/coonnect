@@ -5,20 +5,210 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TravelConnect</title>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    header, footer {
+      background-color: #333;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #007BFF;
+    }
+
+    .container {
+      padding: 2rem;
+    }
+
+    /* Search Bar */
+    .search-bar {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .search-bar select, .search-bar input, .search-bar button {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    .search-bar button {
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .search-bar button:hover {
+      background: #007BFF;
+    }
+
+    /* Profile Cards */
+    .profiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .profile-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .profile-card:hover {
+      transform: scale(1.05);
+    }
+
+    .profile-card h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-card p {
+      margin-bottom: 1rem;
+      color: #555;
+    }
+
+    /* Register Form */
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    form input, form select, form button {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    form button {
+      background: #4CAF50;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    form button:hover {
+      background: #007BFF;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>TravelConnect</h1>
+    <p>Conecta con locales. Viaja diferente.</p>
+  </header>
+
+  <!-- Search Bar -->
+  <div class="container">
+    <div class="search-bar">
+      <select id="countryFilter">
+        <option value="">Selecciona un país</option>
+        <option value="España">España</option>
+        <option value="Alemania">Alemania</option>
+        <option value="México">México</option>
+        <option value="Italia">Italia</option>
+      </select>
+      <select id="hobbyFilter">
+        <option value="">Selecciona un hobby</option>
+        <option value="Aventura">Aventura</option>
+        <option value="Gastronomía">Gastronomía</option>
+        <option value="Arte">Arte</option>
+        <option value="Historia">Historia</option>
+      </select>
+      <button onclick="filterProfiles()">Buscar</button>
+    </div>
+
+    <!-- Profiles Section -->
+    <div id="profiles" class="profiles">
+      <div class="profile-card" data-country="España" data-hobby="Gastronomía">
+        <h3>Juan Pérez</h3>
+        <p>Guía en Barcelona, España</p>
+        <p>Hobbies: Gastronomía, Historia</p>
+        <button class="btn" onclick="contactGuide('Juan Pérez', 'juan@example.com')">Contactar</button>
+      </div>
+      <div class="profile-card" data-country="España" data-hobby="Aventura">
+        <h3>Carlos Sanchez</h3>
+        <p>Guía en Madrid, España</p>
+        <p>Hobbies: Aventura, Arte</p>
+        <button class="btn" onclick="contactGuide('Carlos Sanchez', 'carlos@example.com')">Contactar</button>
+      </div>
+      <!-- Add more profiles as needed -->
+    </div>
+  </div>
+
+  <!-- Register Section -->
+  <div class="container">
+    <h2>¿Eres un guía local? ¡Regístrate ahora!</h2>
+    <form id="registerForm" onsubmit="registerGuide(event)">
+      <input id="registerName" type="text" placeholder="Tu nombre" required>
+      <input id="registerEmail" type="email" placeholder="Tu correo" required>
+      <input id="registerCountry" type="text" placeholder="Tu país" required>
+      <input id="registerHobbies" type="text" placeholder="Tus hobbies (separados por comas)" required>
+      <button type="submit">Registrarse</button>
+    </form>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 TravelConnect. Todos los derechos reservados.</p>
+  </footer>
+
   <script>
-    // Inicializa EmailJS con tu User ID
+    // Inicializa EmailJS
     emailjs.init("TU_USER_ID");
 
-    // Función para manejar el envío del cuestionario
-    function openContactModal(guideName) {
-      const guideEmail = guideName === "Juan Pérez" ? "juan@example.com" :
-                         guideName === "Carlos Sanchez" ? "carlos@example.com" : null;
+    function filterProfiles() {
+      const country = document.getElementById("countryFilter").value.toLowerCase();
+      const hobby = document.getElementById("hobbyFilter").value.toLowerCase();
+      const profiles = document.querySelectorAll(".profile-card");
 
-      if (!guideEmail) {
-        alert("Correo no disponible para este guía.");
-        return;
-      }
+      profiles.forEach(profile => {
+        const profileCountry = profile.getAttribute("data-country").toLowerCase();
+        const profileHobby = profile.getAttribute("data-hobby").toLowerCase();
+        if ((country === "" || profileCountry === country) && (hobby === "" || profileHobby.includes(hobby))) {
+          profile.style.display = "block";
+        } else {
+          profile.style.display = "none";
+        }
+      });
+    }
 
+    function contactGuide(guideName, guideEmail) {
       const message = prompt(`Escribe tu mensaje para ${guideName}:`, "Hola, estoy interesado en tus servicios...");
       if (message) {
         const templateParams = {
@@ -28,17 +218,16 @@
         };
 
         emailjs.send("TU_SERVICE_ID", "TU_TEMPLATE_ID", templateParams)
-          .then((response) => {
+          .then(() => {
             alert("¡Correo enviado exitosamente!");
           })
-          .catch((error) => {
+          .catch(error => {
             console.error("Error al enviar el correo:", error);
             alert("Hubo un problema al enviar el correo. Intenta de nuevo más tarde.");
           });
       }
     }
 
-    // Función para manejar el registro de guías locales
     function registerGuide(event) {
       event.preventDefault();
       const name = document.getElementById("registerName").value;
@@ -59,172 +248,5 @@
       };
 
       emailjs.send("TU_SERVICE_ID", "TU_REGISTER_TEMPLATE_ID", templateParams)
-        .then((response) => {
-          alert("¡Registro completado con éxito! Nos pondremos en contacto contigo pronto.");
-          document.getElementById("registerForm").reset();
-        })
-        .catch((error) => {
-          console.error("Error en el registro:", error);
-          alert("Hubo un problema al completar el registro. Intenta de nuevo más tarde.");
-        });
-    }
-  </script>
-  <style>
-    /* Estilos básicos */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
-    }
-
-    header, footer {
-      background-color: #333;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-
-    .container {
-      padding: 1rem;
-    }
-
-    .profile-card {
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      margin: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 10px 20px;
-      background: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .btn:hover {
-      background: #45a049;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      max-width: 400px;
-      margin: 0 auto;
-      padding: 1rem;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    form input, form select, form button {
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-
-    form button {
-      background: #4CAF50;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    form button:hover {
-      background: #45a049;
-    }
-
-    .search-bar {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      margin: 1rem 0;
-    }
-
-    .search-bar select, .search-bar input, .search-bar button {
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-
-    .search-bar button {
-      background: #4CAF50;
-      color: white;
-      cursor: pointer;
-    }
-
-    .search-bar button:hover {
-      background: #45a049;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>TravelConnect</h1>
-  </header>
-
-  <div class="container">
-    <h2>Explora Perfiles</h2>
-    <div class="search-bar">
-      <select id="countryFilter">
-        <option value="">Selecciona un país</option>
-        <option value="España">España</option>
-        <option value="Alemania">Alemania</option>
-        <option value="México">México</option>
-        <option value="Italia">Italia</option>
-      </select>
-      <select id="hobbyFilter">
-        <option value="">Selecciona un hobby</option>
-        <option value="Aventura">Aventura</option>
-        <option value="Gastronomía">Gastronomía</option>
-        <option value="Arte">Arte</option>
-        <option value="Historia">Historia</option>
-      </select>
-      <button onclick="alert('Función de búsqueda no implementada')">Buscar</button>
-    </div>
-
-    <div class="profile-card">
-      <h3>Juan Pérez</h3>
-      <p>Guía en Barcelona, España</p>
-      <p>Hobbies: Gastronomía, Historia</p>
-      <button class="btn" onclick="openContactModal('Juan Pérez')">Contactar</button>
-    </div>
-
-    <div class="profile-card">
-      <h3>Carlos Sanchez</h3>
-      <p>Guía en Madrid, España</p>
-      <p>Hobbies: Aventura, Arte</p>
-      <button class="btn" onclick="openContactModal('Carlos Sanchez')">Contactar</button>
-    </div>
-  </div>
-
-  <div class="container">
-    <h2>¿Eres un guía local? ¡Regístrate ahora!</h2>
-    <form id="registerForm" onsubmit="registerGuide(event)">
-      <input id="registerName" type="text" placeholder="Tu nombre" required>
-      <input id="registerEmail" type="email" placeholder="Tu correo" required>
-      <input id="registerCountry" type="text" placeholder="Tu país" required>
-      <input id="registerHobbies" type="text" placeholder="Tus hobbies (separados por comas)" required>
-      <button type="submit">Registrarse</button>
-    </form>
-  </div>
-
-  <footer>
-    <p>&copy; 2024 TravelConnect. Todos los derechos reservados.</p>
-  </footer>
-</body>
-</html>
-
-  </script>
-</body>
-</html>
+        .then(() => {
+          alert("¡Registro completado con éxito!
