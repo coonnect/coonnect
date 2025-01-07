@@ -10,8 +10,15 @@
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
         .animate-slideIn {
             animation: slideIn 0.5s ease-out;
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease-out;
         }
         .text-slide {
             opacity: 0;
@@ -21,61 +28,89 @@
         .text-slide.active {
             opacity: 1;
         }
+        .guide-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .guide-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .filter-section {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+        }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body class="bg-white">
     <!-- Header Section -->
-    <header class="relative h-screen flex items-center justify-center bg-black text-white">
+    <header class="relative h-screen flex items-center justify-center bg-black text-white overflow-hidden">
         <div class="absolute inset-0">
-            <img src="/api/placeholder/1920/1080" alt="Travel Background" class="w-full h-full object-cover opacity-50"/>
+            <img src="/api/placeholder/1920/1080" alt="Travel Background" class="w-full h-full object-cover opacity-50 transform scale-105 transition-transform duration-10000 hover:scale-100"/>
         </div>
         <div class="relative z-10 text-center animate-slideIn">
-            <img src="/api/placeholder/100/100" alt="LocalVibes Logo" class="mx-auto mb-8 rounded-full"/>
-            <h1 class="text-6xl font-bold mb-4">LocalVibes</h1>
-            <p class="text-xl mb-8">Descubre el mundo a través de sus habitantes</p>
+            <img src="/api/placeholder/100/100" alt="LocalVibes Logo" class="mx-auto mb-8 rounded-full shadow-2xl transform hover:scale-105 transition-transform duration-300"/>
+            <h1 class="text-6xl font-bold mb-4 tracking-tight">LocalVibes</h1>
+            <p class="text-2xl mb-8 font-light">Descubre el mundo a través de sus habitantes</p>
             <div id="sliding-texts" class="h-8 relative">
                 <p class="text-slide active">"Vive como un local, no como un turista"</p>
                 <p class="text-slide">"Conecta con personas reales"</p>
                 <p class="text-slide">"Descubre la auténtica cultura"</p>
             </div>
+            <a href="#search" class="mt-12 inline-block bg-white text-black px-8 py-4 rounded-full font-bold hover:bg-gray-200 transition-colors transform hover:scale-105 transition-transform duration-300">
+                Comenzar aventura
+            </a>
         </div>
     </header>
 
     <!-- Search Section -->
-    <section class="py-20 px-4 bg-gray-50">
+    <section id="search" class="py-24 px-4 filter-section">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-4xl font-bold text-center mb-12">Encuentra tu guía local</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <select class="w-full p-4 rounded-lg border border-gray-200 focus:ring-2 focus:ring-black">
-                    <option>Selecciona un país</option>
-                    <option>España</option>
-                    <option>Japón</option>
-                    <option>Italia</option>
-                </select>
-                <select class="w-full p-4 rounded-lg border border-gray-200 focus:ring-2 focus:ring-black">
-                    <option>Rango de edad</option>
-                    <option>20-30</option>
-                    <option>30-40</option>
-                    <option>40+</option>
-                </select>
-                <select class="w-full p-4 rounded-lg border border-gray-200 focus:ring-2 focus:ring-black">
-                    <option>Intereses</option>
-                    <option>Gastronomía</option>
-                    <option>Arte</option>
-                    <option>Naturaleza</option>
-                </select>
+            <div class="bg-white p-8 rounded-2xl shadow-lg">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <select id="country" class="w-full p-4 rounded-lg border border-gray-200 focus:ring-2 focus:ring-black transition-all">
+                        <option value="">Selecciona un país</option>
+                        <option value="españa">España</option>
+                        <option value="japón">Japón</option>
+                        <option value="italia">Italia</option>
+                    </select>
+                    <select id="age" class="w-full p-4 rounded-lg border border-gray-200 focus:ring-2 focus:ring-black transition-all">
+                        <option value="">Rango de edad</option>
+                        <option value="20-30">20-30</option>
+                        <option value="30-40">30-40</option>
+                        <option value="40+">40+</option>
+                    </select>
+                    <select id="interest" class="w-full p-4 rounded-lg border border-gray-200 focus:ring-2 focus:ring-black transition-all">
+                        <option value="">Intereses</option>
+                        <option value="gastronomía">Gastronomía</option>
+                        <option value="arte">Arte</option>
+                        <option value="naturaleza">Naturaleza</option>
+                    </select>
+                </div>
+                <div class="mt-6 text-center">
+                    <button id="apply-filters" class="bg-black text-white px-8 py-4 rounded-lg hover:bg-gray-800 transition-colors transform hover:scale-105 transition-transform duration-300">
+                        Aplicar Filtros
+                    </button>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Local Guides Section -->
-    <section class="py-20 px-4">
+    <section class="py-24 px-4">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-4xl font-bold text-center mb-12">Guías Locales Destacados</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div id="guides-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Guide Card 1 -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <img src="/api/placeholder/400/300" alt="Local Guide" class="w-full h-64 object-cover"/>
+                <div class="guide-card bg-white rounded-2xl shadow-lg overflow-hidden" data-country="españa" data-age="20-30" data-interests="gastronomía,arte">
+                    <div class="relative">
+                        <img src="/api/placeholder/400/300" alt="Local Guide" class="w-full h-64 object-cover"/>
+                        <div class="absolute top-4 right-4 bg-black text-white px-3 py-1 rounded-full text-sm">
+                            ⭐ 4.9/5
+                        </div>
+                    </div>
                     <div class="p-6">
                         <h3 class="text-2xl font-bold mb-2">Ana García</h3>
                         <p class="text-gray-600 mb-4">Madrid, España • 28 años</p>
@@ -90,8 +125,13 @@
                 </div>
 
                 <!-- Guide Card 2 -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <img src="/api/placeholder/400/300" alt="Local Guide" class="w-full h-64 object-cover"/>
+                <div class="guide-card bg-white rounded-2xl shadow-lg overflow-hidden" data-country="japón" data-age="30-40" data-interests="arte,naturaleza">
+                    <div class="relative">
+                        <img src="/api/placeholder/400/300" alt="Local Guide" class="w-full h-64 object-cover"/>
+                        <div class="absolute top-4 right-4 bg-black text-white px-3 py-1 rounded-full text-sm">
+                            ⭐ 4.8/5
+                        </div>
+                    </div>
                     <div class="p-6">
                         <h3 class="text-2xl font-bold mb-2">Kenji Tanaka</h3>
                         <p class="text-gray-600 mb-4">Kioto, Japón • 32 años</p>
@@ -106,8 +146,13 @@
                 </div>
 
                 <!-- Guide Card 3 -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <img src="/api/placeholder/400/300" alt="Local Guide" class="w-full h-64 object-cover"/>
+                <div class="guide-card bg-white rounded-2xl shadow-lg overflow-hidden" data-country="italia" data-age="30-40" data-interests="gastronomía,arte">
+                    <div class="relative">
+                        <img src="/api/placeholder/400/300" alt="Local Guide" class="w-full h-64 object-cover"/>
+                        <div class="absolute top-4 right-4 bg-black text-white px-3 py-1 rounded-full text-sm">
+                            ⭐ 4.9/5
+                        </div>
+                    </div>
                     <div class="p-6">
                         <h3 class="text-2xl font-bold mb-2">Sofia Rossi</h3>
                         <p class="text-gray-600 mb-4">Florencia, Italia • 35 años</p>
@@ -125,17 +170,29 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-black text-white py-12">
+    <footer class="bg-black text-white py-16">
         <div class="max-w-6xl mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
                 <div>
                     <h3 class="text-2xl font-bold mb-4">Contacto</h3>
                     <p class="mb-2">Email: info@localvibes.com</p>
                     <p>Teléfono: +34 900 123 456</p>
                 </div>
-                <div class="text-right">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4">Navegación</h3>
+                    <ul>
+                        <li class="mb-2"><a href="#" class="hover:text-gray-300">Inicio</a></li>
+                        <li class="mb-2"><a href="#" class="hover:text-gray-300">Sobre nosotros</a></li>
+                        <li class="mb-2"><a href="#" class="hover:text-gray-300">Guías</a></li>
+                        <li><a href="#" class="hover:text-gray-300">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
                     <h3 class="text-2xl font-bold mb-4">Síguenos</h3>
-                    <a href="https://instagram.com/localvibes" class="inline-block bg-white text-black px-6 py-2 rounded-lg hover:bg-gray-200 transition-colors">Instagram</a>
+                    <div class="flex gap-4">
+                        <a href="https://instagram.com/localvibes" class="inline-block bg-white text-black px-6 py-2 rounded-lg hover:bg-gray-200 transition-colors">Instagram</a>
+                        <a href="https://twitter.com/localvibes" class="inline-block bg-white text-black px-6 py-2 rounded-lg hover:bg-gray-200 transition-colors">Twitter</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -153,6 +210,32 @@
         }
 
         setInterval(changeText, 2000);
+
+        // Filter functionality
+        document.getElementById('apply-filters').addEventListener('click', function() {
+            const country = document.getElementById('country').value.toLowerCase();
+            const age = document.getElementById('age').value.toLowerCase();
+            const interest = document.getElementById('interest').value.toLowerCase();
+
+            const guides = document.querySelectorAll('.guide-card');
+            
+            guides.forEach(guide => {
+                const guideCountry = guide.dataset.country.toLowerCase();
+                const guideAge = guide.dataset.age.toLowerCase();
+                const guideInterests = guide.dataset.interests.toLowerCase();
+
+                const countryMatch = !country || guideCountry === country;
+                const ageMatch = !age || guideAge === age;
+                const interestMatch = !interest || guideInterests.includes(interest);
+
+                if (countryMatch && ageMatch && interestMatch) {
+                    guide.classList.remove('hidden');
+                    guide.classList.add('animate-fadeIn');
+                } else {
+                    guide.classList.add('hidden');
+                }
+            });
+        });
     </script>
 </body>
 </html>
